@@ -19,18 +19,16 @@ describe('API endpoint', function() {
 
   });
 
-  // GET - List all colors
   it('should return all values', function() {
     return chai.request(app)
       .get('/posts')
       .then(function(res) {
         try {
-        expect(res).to.have.status(401);
+        expect(res).to.have.status(200);
         expect(res).to.be.json;
-        expect(res.body).to.be.a('array');
+        expect(res.body).to.be.a('integer');
       }
       catch (err) {
-  //console.log(err.message);
   req(err.message);
   throw err
 }
