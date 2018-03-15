@@ -25,7 +25,7 @@ describe('API endpoint', function() {
       .get('/posts')
       .then(function(res) {
         try {
-        expect(res).to.have.status(200);
+        expect(res).to.have.status(401);
         expect(res).to.be.json;
         expect(res.body).to.be.a('array');
       }
