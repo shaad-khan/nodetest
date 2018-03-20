@@ -6,6 +6,7 @@ var request = require("request");
 var encodedPat = encodePat('72cwherppis2lgz5gjcrahj6bunq5g5fhfdslkawzy6ie2lk24wa');
 var decode = require('unescape');
 var _ = require('lodash');
+
 var striptags = require('striptags');
 chai.use(require('chai-http'));
 var to_json = require('xmljson').to_json;
@@ -18,14 +19,19 @@ var rcode;
 describe('API endpoint', function() {
   this.timeout(5000); // How long to wait for a response (ms)
 
-  before(function() {
+  before(async function() {
 
-    getResponsecode().then((data)=>{
+    //const response = getResponsecode();
+await getResponsecode().then((data)=>{
+  rcode=data.split(":");
+  rcode=rcode[1];
+});
+    /*.then((data)=>{
     console.log(data);
     rcode=data.split(":");
     rcode=rcode[1];
     //console.log(rcode);
-    });
+  });*/
   });
 
   after(function() {
@@ -37,14 +43,14 @@ describe('API endpoint', function() {
       .get('/posts')
       .then(function(res) {
         try {
-      console.log("here"+rcode);
+       //console.log("here"+rcode);
         expect(res).to.have.status(rcode);
         expect(res).to.be.json;
         expect(res.body).to.be.a('Array');
       }
       catch (err) {
   req(err.message);
-  console.log(err);
+  //console.log(er);
   throw err
 }
         //expect(res.body[0].id).to.be.an('integer');
@@ -160,7 +166,7 @@ function getResponsecode()
     x=x.replace("<DIV><p>","");
     x=x.replace("</p></DIV>","");
 
-    var y='<steps id="0" last="2"><step id="2" type="ActionStep"><parameterizedString isformatted="true">response:200</parameterizedString><parameterizedString isformatted="true"></parameterizedString><description/></step></steps>';
+  //  var y='<steps id="0" last="2"><step id="2" type="ActionStep"><parameterizedString isformatted="true">response:200</parameterizedString><parameterizedString isformatted="true"></parameterizedString><description/></step></steps>';
     resolve(x);
 })
 }).then((res)=>{
