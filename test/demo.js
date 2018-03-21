@@ -10,7 +10,7 @@ var _ = require('lodash');
 var striptags = require('striptags');
 chai.use(require('chai-http'));
 var to_json = require('xmljson').to_json;
-const app="http://jsonplaceholder.typicode.com";
+const app="https://admin.aspqa01us.acuitynext.io";
 //const app = require('../index.js'); // Our app
 var rcode;
 
@@ -20,18 +20,10 @@ describe('API endpoint', function() {
   this.timeout(5000); // How long to wait for a response (ms)
 
   before(async function() {
-
-    //const response = getResponsecode();
 await getResponsecode().then((data)=>{
   rcode=data.split(":");
   rcode=rcode[1];
 });
-    /*.then((data)=>{
-    console.log(data);
-    rcode=data.split(":");
-    rcode=rcode[1];
-    //console.log(rcode);
-  });*/
   });
 
   after(function() {
@@ -40,7 +32,7 @@ await getResponsecode().then((data)=>{
 
   it('should return all values', function() {
     return chai.request(app)
-      .get('/posts')
+      .get('/api/v1/buildings/1').set({'atr-subscription-key':'fa734f6a8f544f6c99e462de74e689eb','atr-partner-id':'F8920659-D3AF-4823-90C0-276C48FA9DFD','atr-request-source':'_qa','Accept':'application/json'})
       .then(function(res) {
         try {
        //console.log("here"+rcode);
@@ -108,11 +100,12 @@ await getResponsecode().then((data)=>{
 
 function req(x)
 {
-
+var encodedPat = encodePat('ptespah6ggnrwlsofomzxjlq4v6yzv6uubu6qmt4zuaolrwzx4na');
   var options = {
      method: 'PATCH',
      headers: { 'cache-control': 'no-cache', 'authorization': `Basic ${encodedPat}`,'Content-Type': 'application/json-patch+json'},
-     url: "https://testshaad.visualstudio.com/defaultcollection/nodetest/_apis/wit/workitems/$Bug?api-version=1.0",
+     //url: "https://testshaad.visualstudio.com/defaultcollection/nodetest/_apis/wit/workitems/$Bug?api-version=1.0",
+url: "https://ablcode.visualstudio.com/QualityAssurance/_apis/wit/workitems/$Bug?api-version=1.0",
      body:  [{
       "op": "add",
       "path": "/fields/System.Title",
