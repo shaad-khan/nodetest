@@ -41,7 +41,8 @@ await getResponsecode().then((data)=>{
         expect(res.body).to.be.a('Array');
       }
       catch (err) {
-  req(err.message);
+        var m=err.message.replace('{ Object (domain, _events, ...) }','{Api call to : https://admin.aspqa01us.acuitynext.io/api/v1/buildings/1}');
+  req(m);
   //console.log(er);
   throw err
 }
@@ -105,7 +106,7 @@ var encodedPat = encodePat('ptespah6ggnrwlsofomzxjlq4v6yzv6uubu6qmt4zuaolrwzx4na
   var options = {
      method: 'PATCH',
      headers: { 'cache-control': 'no-cache', 'authorization': `Basic ${encodedPat}`,'Content-Type': 'application/json-patch+json'},
-     //url: "https://testshaad.visualstudio.com/defaultcollection/nodetest/_apis/wit/workitems/$Bug?api-version=1.0",
+    // url: "https://testshaad.visualstudio.com/defaultcollection/nodetest/_apis/wit/workitems/$Bug?api-version=1.0",
 url: "https://ablcode.visualstudio.com/QualityAssurance/_apis/wit/workitems/$Bug?api-version=1.0",
      body:  [{
       "op": "add",
