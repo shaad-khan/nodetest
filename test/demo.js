@@ -1,5 +1,7 @@
 'use strict';
-
+const {Builder, By, Key, until} = require('selenium-webdriver');
+var chrome=require('chromedriver');
+var sleep = require('sleep-promise');
 const chai = require('chai');
 const expect = require('chai').expect;
 var request = require("request");
@@ -13,45 +15,71 @@ var to_json = require('xmljson').to_json;
 const app="https://admin.aspqa01us.acuitynext.io";
 //const app = require('../index.js'); // Our app
 var rcode;
+var driver;
 
 
+describe('Admin Ui Testing', function() {
+  this.timeout(600000); // How long to wait for a response (ms)
 
-describe('API endpoint', function() {
-  this.timeout(5000); // How long to wait for a response (ms)
+  before(async function example() {
+  driver = await new Builder().forBrowser('chrome').build();
+  await driver.get('https://admin.qa.atrius-iot.com/');
+  await sleep(3000);
+  await driver.findElement(By.name('loginfmt')).sendKeys('testqa3@atgqa.onmicrosoft.com');
+  await sleep(1000);
+  await driver.findElement(By.xpath('//*[@id="idSIButton9"]')).click();
+  await sleep(2000);
+  await driver.findElement(By.xpath('//*[@id="i0118"]')).sendKeys("April@2018");
+  await sleep(2000);
+  await driver.findElement(By.xpath('//*[@id="idSIButton9"]')).click();
+  await sleep(3000);
+  await driver.findElement(By.xpath('//*[@id="idSIButton9"]')).click();
+  await sleep(7000);
 
-  before(async function() {
-await getResponsecode().then((data)=>{
-  rcode=data.split(":");
-  rcode=rcode[1];
 });
-  });
+
 
   after(function() {
 
   });
 
-  it('should return all values', function() {
-    return chai.request(app)
-      .get('/api/v1/buildings/1').set({'atr-subscription-key':'fa734f6a8f544f6c99e462de74e689eb','atr-partner-id':'F8920659-D3AF-4823-90C0-276C48FA9DFD','atr-request-source':'_qa','Accept':'application/json'})
-      .then(function(res) {
-        try {
+  it('Test For List elements for partner', async function() {
+    await driver.findElement(By.xpath("/html/body/compose[2]/div/div/form/div[1]/material-select/div/select")).findElement(By.xpath("/html/body/compose[2]/div/div/form/div[1]/material-select/div/select/option[3]")).click();
+   await sleep(2000);
+   await driver.findElement(By.xpath("//*[@id='save']")).click();
+    await sleep(2000);
+   await driver.findElement(By.xpath("//*[@id='save']")).click();
+   await sleep(7000);
+  await driver.findElement(By.xpath("/html/body/section/nav-bar/nav/ul/li[3]/div/a")).click();
+  await sleep(4000);
+  await driver.findElement(By.xpath("/html/body/section/div/router-view/section/div[1]/ul/li[2]/a")).click();
+await sleep(2000);
+
        //console.log("here"+rcode);
-        expect(res).to.have.status(rcode);
+        /*expect(res).to.have.status(rcode);
         expect(res).to.be.json;
-        expect(res.body).to.be.a('Array');
-      }
-      catch (err) {
-        var m=err.message.replace('{ Object (domain, _events, ...) }','{Api call to : https://admin.aspqa01us.acuitynext.io/api/v1/buildings/1}');
-  req(m);
-  //console.log(er);
-  throw err
-}
+        expect(res.body).to.be.a('Array');*/
+        var query = driver.findElements(By.xpath("/html/body/section/div/router-view/section/div[2]/router-view/div[1]/ul"));
+
+query.then((e)=>
+{
+  //console.log(JSON.stringify(e));
+e.map(function (elem) {
+        elem.getText().then((x)=>{
+          console.log(x);
+          if(x=="organization")
+          {
+            expect(x).to.equal("organization");
+          }
+        });
+});
+
         //expect(res.body[0].id).to.be.an('integer');
       })
   });
 
   // GET - Invalid path
-  it('should return Not Found', function() {
+/*  it('should return Not Found', function() {
     return chai.request(app)
       .get('/INVALID_PATH')
       .then(function(res) {
